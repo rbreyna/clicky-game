@@ -6,9 +6,9 @@ import Cards from "./components/Cards"
 import characters from "./memory-cards.json"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+let initialCharacter = characters;
 
 class App extends Component {
-
 
     state = {
         characters,
@@ -52,7 +52,7 @@ class App extends Component {
             let characterCopy = [...this.state.characters];
             characterCopy[index].clicked = true;
             this.setState({
-                characters: characterCopy,
+                characters: initialCharacter,
                 currentScore: this.state.currentScore + 1
             }, () => {
                 if (this.state.currentScore > this.state.topScore) {
@@ -60,20 +60,19 @@ class App extends Component {
                 }
             });
 
+            if(this.state.currentScore === 16){
+                alert("Congrats! You found them all!");
+            }
+
         } else {
             index = this.state.characters.findIndex(x => x.id === id);
             alert("You've already choosen " + this.state.characters[index].name + "!")
 
             let characterCopy = [...this.state.characters];
 
-            for (var i = 0; i < characterCopy; i++) {
-
-                if (characterCopy[i].clicked) {
-
-                    characterCopy[i].clicked = false;
-                }
-            }
-
+            for(var i=0; i<characterCopy.length; i++)
+                characterCopy[i].clicked = false;
+            
             this.setState({
                 currentScore: 0,
                 characters: characterCopy
