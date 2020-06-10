@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar"
 
-function Nav() {
+function Nav(props) {
 
     return(
     <Navbar bg="dark" variant="dark">
@@ -16,8 +16,8 @@ function Nav() {
       The Michael Scott Memory Game
     </Navbar.Brand>
         <ul className="navbar-nav ml-auto"> 
-            <li className="nav-item" style={{color: "white", padding: "10px"}}> Current Score: 0</li> 
-            <li className="nav-item" style={{color: "white", padding: "10px"}}> High Score: 0</li> 
+            <li className="nav-item" style={{color: "white", padding: "10px"}}> Current Score: {props.currentScore}</li> 
+            <li className="nav-item" style={{color: "white", padding: "10px"}}> High Score: {props.topScore}</li> 
         </ul> 
     </Navbar>
     )

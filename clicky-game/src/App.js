@@ -6,7 +6,9 @@ import Cards from "./components/Cards"
 import characters from "./memory-cards.json"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 class App extends Component {
+
 
     state = {
         characters,
@@ -34,20 +36,79 @@ class App extends Component {
         return arr;
     }
 
+    handleOnClick = (id) => {
+
+        var index;
+
+        console.log("You've clicked " + id + "!")
+
+        let obj = this.state.characters.find(o => o.id === id);
+
+        if (!obj.clicked) {
+
+            index = this.state.characters.findIndex(x => x.id === id);
+
+            //Makes copy of characters
+            let characterCopy = [...this.state.characters];
+            characterCopy[index].clicked = true;
+            this.setState({
+                characters: characterCopy,
+                currentScore: this.state.currentScore + 1
+            }, () => {
+                if (this.state.currentScore > this.state.topScore) {
+                    this.setState({ topScore: this.state.currentScore })
+                }
+            });
+
+        } else {
+            index = this.state.characters.findIndex(x => x.id === id);
+            alert("You've already choosen " + this.state.characters[index].name + "!")
+
+            let characterCopy = [...this.state.characters];
+
+            for (var i = 0; i < characterCopy; i++) {
+
+                if (characterCopy[i].clicked) {
+
+                    characterCopy[i].clicked = false;
+                }
+            }
+
+            this.setState({
+                currentScore: 0,
+                characters: characterCopy
+            })
+
+            console.log(this.state.characters)
+            return true;
+
+        }
+
+
+    }
+
+
     render() {
 
 
         return (
             <Wrapper className="bg-dark">
-                <Nav />
+                <Nav currentScore={this.state.currentScore} topScore={this.state.topScore} />
                 <div className="container col-xl-6" >
                     <Col >
                         {this.shuffleArray(this.state.characters).map(persona =>
-                            <Cards image={persona.image}></Cards>)}
+                            <Cards
+                                key={persona.id}
+                                id={persona.id}
+                                clicked={persona.clicked}
+                                image={persona.image}
+                                clickHandler={this.handleOnClick}>
+                            </Cards>)}
                     </Col>
                 </div>
             </Wrapper >
         )
     }
 }
-    export default App;
+
+export default App;
